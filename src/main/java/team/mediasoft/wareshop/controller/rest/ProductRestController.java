@@ -109,7 +109,6 @@ public class ProductRestController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(
             summary = "Удалить продукт",
             responses = {
