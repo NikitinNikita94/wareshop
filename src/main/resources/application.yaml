@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: wareshop
+  datasource:
+    url: jdbc:postgresql://pgserver:5432/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        hbm2ddl:
+          auto: validate
+
+logging:
+  level:
+    root: info

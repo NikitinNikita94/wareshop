@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  pgserver:
+    container_name: pgserver
+    image: postgres
+    networks:
+      - network-1
+    ports:
+      - "5555:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+  app:
+    container_name: wareshop
+    image: nikitin/backend-docker
+    networks:
+      - network-1
+    ports:
+      - "8080:8080"
+    depends_on:
+      pgserver:
+        condition: service_started
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://pgserver:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+networks:
+  network-1:
