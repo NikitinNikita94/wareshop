@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import team.mediasoft.wareshop.data.repository.ProductRepository;
 import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.ProductReadDto;
-import team.mediasoft.wareshop.mapper.ProductCreateEditMapper;
-import team.mediasoft.wareshop.mapper.ProductReadMapper;
+import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
+import team.mediasoft.wareshop.mapper.ProductMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,8 +19,7 @@ import java.util.UUID;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductCreateEditMapper createEditMapper;
-    private final ProductReadMapper readMapper;
+    //private final ProductMapper productMapper = ProductMapper.INSTANCE;
 
     /**
      * Метод возвращает коллекцию продуктов(товаров)
@@ -29,7 +28,7 @@ public class ProductService {
      */
     public List<ProductReadDto> findAll() {
         return productRepository.findAll().stream()
-                .map(readMapper::map)
+                .map(ProductMapper.INSTANCE::productToProductReadDto)
                 .toList();
     }
 
@@ -41,7 +40,7 @@ public class ProductService {
      */
     public Optional<ProductReadDto> findById(UUID id) {
         return productRepository.findById(id)
-                .map(readMapper::map);
+                .map(ProductMapper.INSTANCE::productToProductReadDto);
     }
 
     /**
@@ -53,9 +52,9 @@ public class ProductService {
     @Transactional
     public ProductReadDto create(ProductCreateEditDto productDto) {
         return Optional.of(productDto)
-                .map(createEditMapper::map)
+                .map(ProductMapper.INSTANCE::productCreateEditDtoToProduct)
                 .map(productRepository::save)
-                .map(readMapper::map)
+                .map(ProductMapper.INSTANCE::productToProductReadDto)
                 .orElseThrow();
     }
 
@@ -67,11 +66,11 @@ public class ProductService {
      * @return Optional<ProductReadDto> - обновленный продукт(товар)
      */
     @Transactional
-    public Optional<ProductReadDto> update(UUID id, ProductCreateEditDto productDto) {
+    public Optional<ProductReadDto> update(UUID id, ProductUpdateDto productDto) {
         return productRepository.findById(id)
-                .map(entity -> createEditMapper.mapUpdate(productDto, entity))
+                .map(entity -> ProductMapper.INSTANCE.productUpdateDtoToUpdateProduct(entity, productDto))
                 .map(productRepository::saveAndFlush)
-                .map(readMapper::map);
+                .map(ProductMapper.INSTANCE::productToProductReadDto);
     }
 
     /**

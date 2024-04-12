@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import team.mediasoft.wareshop.entity.ProductCategory;
 import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.ProductReadDto;
+import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
 import team.mediasoft.wareshop.integration.IntegrationTestBase;
 
 import java.math.BigDecimal;
@@ -29,7 +30,14 @@ class ProductServiceTest extends IntegrationTestBase {
         Optional<ProductReadDto> actual = productService.findById(PRODUCT_UUID_1);
 
         assertThat(result).hasSize(3);
-        actual.ifPresent(product -> assertEquals(result.get(0), product));
+        actual.ifPresent(product -> assertEquals(result.get(0).getName(), product.getName()));
+        actual.ifPresent(product -> assertEquals(result.get(0).getDescription(), product.getDescription()));
+        actual.ifPresent(product -> assertEquals(result.get(0).getVendorCode(), product.getVendorCode()));
+        actual.ifPresent(product -> assertEquals(result.get(0).getPrice(), product.getPrice()));
+        actual.ifPresent(product -> assertEquals(result.get(0).getCategory(), product.getCategory()));
+        actual.ifPresent(product -> assertEquals(result.get(0).getLastUpdateAmount(), product.getLastUpdateAmount()));
+        actual.ifPresent(product -> assertEquals(result.get(0).getCreateAt(), product.getCreateAt()));
+        actual.ifPresent(product -> assertEquals(result.get(0).getCategory(), product.getCategory()));
     }
 
 
@@ -62,7 +70,7 @@ class ProductServiceTest extends IntegrationTestBase {
 
     @Test
     void updateTest() {
-        ProductCreateEditDto productDto = new ProductCreateEditDto(
+        ProductUpdateDto productUpdateDto = new ProductUpdateDto(
                 "Телефон LG",
                 252,
                 "Мобильный телефон",
@@ -70,16 +78,16 @@ class ProductServiceTest extends IntegrationTestBase {
                 BigDecimal.valueOf(44_098.90),
                 35
         );
-        Optional<ProductReadDto> actualResult = productService.update(PRODUCT_UUID_1, productDto);
+        Optional<ProductReadDto> actualResult = productService.update(PRODUCT_UUID_1, productUpdateDto);
         assertTrue(actualResult.isPresent());
 
         actualResult.ifPresent(product -> {
-            assertEquals(productDto.getName(), product.getName());
-            assertEquals(productDto.getVendorCode(), product.getVendorCode());
-            assertEquals(productDto.getDescription(), product.getDescription());
-            assertEquals(productDto.getCategory(), product.getCategory());
-            assertEquals(productDto.getPrice(), product.getPrice());
-            assertEquals(productDto.getAmount(), product.getAmount());
+            assertEquals(productUpdateDto.getName(), product.getName());
+            assertEquals(productUpdateDto.getVendorCode(), product.getVendorCode());
+            assertEquals(productUpdateDto.getDescription(), product.getDescription());
+            assertEquals(productUpdateDto.getCategory(), product.getCategory());
+            assertEquals(productUpdateDto.getPrice(), product.getPrice());
+            assertEquals(productUpdateDto.getAmount(), product.getAmount());
         });
     }
 

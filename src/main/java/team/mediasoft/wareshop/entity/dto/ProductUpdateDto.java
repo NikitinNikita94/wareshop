@@ -1,13 +1,16 @@
 package team.mediasoft.wareshop.entity.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.Value;
+import lombok.*;
 import team.mediasoft.wareshop.entity.ProductCategory;
 
 import java.math.BigDecimal;
 
-@Value
-public class ProductCreateEditDto {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductUpdateDto {
 
     @NotBlank
     @Size(min = 3, max = 64)
