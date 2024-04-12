@@ -42,7 +42,7 @@ public class ProductRestController {
                             description = "Запрос выполнен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = ProductReadDto.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = ProductDtoInfo.class))
                             )
                     )
             }
@@ -63,7 +63,7 @@ public class ProductRestController {
                             description = "Запрос выполнен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ProductReadDto.class)
+                                    schema = @Schema(implementation = ProductDtoInfo.class)
                             )
                     )
             }
@@ -86,7 +86,7 @@ public class ProductRestController {
                             description = "Запрос выполнен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ProductReadDto.class)
+                                    schema = @Schema(implementation = ProductDtoInfo.class)
                             )
                     )
             }
@@ -104,7 +104,7 @@ public class ProductRestController {
                             description = "Продукт успешно обновлен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ProductReadDto.class)
+                                    schema = @Schema(implementation = ProductDtoInfo.class)
                             )
                     )
             }
