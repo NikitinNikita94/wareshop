@@ -7,9 +7,11 @@ import team.mediasoft.wareshop.data.repository.ProductRepository;
 import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.ProductReadDto;
 import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
+import team.mediasoft.wareshop.exception.ProductNotFoundException;
 import team.mediasoft.wareshop.mapper.ProductMapper;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,8 +40,9 @@ public class ProductService {
      * @return Optional<ProductReadDto>
      */
     public Optional<ProductReadDto> findById(UUID id) {
-        return productRepository.findById(id)
-                .map(ProductMapper.INSTANCE::productToProductReadDto);
+        return Optional.ofNullable(productRepository.findById(id)
+                .map(ProductMapper.INSTANCE::productToProductReadDto)
+                .orElseThrow(() -> new ProductNotFoundException(id.toString())));
     }
 
     /**
@@ -66,10 +69,12 @@ public class ProductService {
      */
     @Transactional
     public Optional<ProductReadDto> update(UUID id, ProductUpdateDto productDto) {
-        return productRepository.findById(id)
+        return Optional.ofNullable(productRepository.findById(id)
+                .filter(entity -> Objects.equals(productDto.getVendorCode(), entity.getVendorCode()))
                 .map(entity -> ProductMapper.INSTANCE.productUpdateDtoToUpdateProduct(entity, productDto))
                 .map(productRepository::saveAndFlush)
-                .map(ProductMapper.INSTANCE::productToProductReadDto);
+                .map(ProductMapper.INSTANCE::productToProductReadDto)
+                .orElseThrow(() -> new ProductNotFoundException(id.toString())));
     }
 
     /**

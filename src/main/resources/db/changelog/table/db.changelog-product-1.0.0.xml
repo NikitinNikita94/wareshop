@@ -19,7 +19,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="vendor_code" type="INT">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="description" type="VARCHAR(256)">
                 <constraints nullable="false"/>
