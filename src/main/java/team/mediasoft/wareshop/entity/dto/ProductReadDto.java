@@ -1,14 +1,17 @@
 package team.mediasoft.wareshop.entity.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.Value;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import team.mediasoft.wareshop.entity.ProductCategory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Value
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductReadDto {
 
     @NotBlank
@@ -17,7 +20,6 @@ public class ProductReadDto {
 
     @PositiveOrZero
     @Max(value = 50_000)
-    @Min(value = 1)
     Integer vendorCode;
 
     @NotBlank
@@ -29,7 +31,6 @@ public class ProductReadDto {
 
     @PositiveOrZero
     @Max(value = 20_000_000)
-    @Min(value = 10_000)
     BigDecimal price;
 
     @PositiveOrZero
@@ -40,4 +41,5 @@ public class ProductReadDto {
     LocalDateTime lastUpdateAmount;
     @DateTimeFormat(pattern = "YYYY-MM-DD HH:MM:SS")
     LocalDateTime createAt;
+
 }

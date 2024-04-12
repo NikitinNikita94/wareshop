@@ -15,9 +15,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
+import team.mediasoft.wareshop.entity.dto.ProductDtoInfo;
 import team.mediasoft.wareshop.entity.dto.ProductReadDto;
+import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
+import team.mediasoft.wareshop.mapper.ProductMapper;
 import team.mediasoft.wareshop.service.ProductService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,13 +42,16 @@ public class ProductRestController {
                             description = "Запрос выполнен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = ProductReadDto.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = ProductDtoInfo.class))
                             )
                     )
             }
     )
-    public List<ProductReadDto> findAll() {
-        return productService.findAll();
+    public List<ProductDtoInfo> findAll() {
+        LocalDateTime.now();
+        return productService.findAll().stream()
+                .map(ProductMapper.INSTANCE::productReadDtoToProductDtoInfo)
+                .toList();
     }
 
     @GetMapping("/{id}")
@@ -56,13 +63,14 @@ public class ProductRestController {
                             description = "Запрос выполнен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ProductReadDto.class)
+                                    schema = @Schema(implementation = ProductDtoInfo.class)
                             )
                     )
             }
     )
-    public ResponseEntity<ProductReadDto> findById(@PathVariable("id") @Parameter(description = "Идентификатор продукта") UUID id) {
+    public ResponseEntity<ProductDtoInfo> findById(@PathVariable("id") @Parameter(description = "Идентификатор продукта") UUID id) {
         return productService.findById(id)
+                .map(ProductMapper.INSTANCE::productReadDtoToProductDtoInfo)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -78,13 +86,13 @@ public class ProductRestController {
                             description = "Запрос выполнен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ProductReadDto.class)
+                                    schema = @Schema(implementation = ProductDtoInfo.class)
                             )
                     )
             }
     )
-    public ProductReadDto create(@RequestBody @Validated ProductCreateEditDto user) {
-        return productService.create(user);
+    public ProductDtoInfo create(@RequestBody @Validated ProductCreateEditDto user) {
+        return ProductMapper.INSTANCE.productReadDtoToProductDtoInfo(productService.create(user));
     }
 
     @PutMapping("/{id}")
@@ -96,14 +104,15 @@ public class ProductRestController {
                             description = "Продукт успешно обновлен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ProductReadDto.class)
+                                    schema = @Schema(implementation = ProductDtoInfo.class)
                             )
                     )
             }
     )
-    public ResponseEntity<ProductReadDto> update(@PathVariable("id") @Parameter(description = "Идентификатор продукта") UUID id,
-                                                 @RequestBody @Validated ProductCreateEditDto product) {
-        return productService.update(id, product)
+    public ResponseEntity<ProductDtoInfo> update(@PathVariable("id") @Parameter(description = "Идентификатор продукта") UUID id,
+                                                 @RequestBody @Validated ProductUpdateDto productUpdateDto) {
+        return productService.update(id, productUpdateDto)
+                .map(ProductMapper.INSTANCE::productReadDtoToProductDtoInfo)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
