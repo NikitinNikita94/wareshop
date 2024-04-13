@@ -1,6 +1,7 @@
 package team.mediasoft.wareshop.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.mediasoft.wareshop.data.repository.ProductRepository;
@@ -27,8 +28,8 @@ public class ProductService {
      *
      * @return List<ProductReadDto> - коллекция продуктов(товаров)
      */
-    public List<ProductReadDto> findAll() {
-        return productRepository.findAll().stream()
+    public List<ProductReadDto> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable).stream()
                 .map(ProductMapper.INSTANCE::productToProductReadDto)
                 .toList();
     }

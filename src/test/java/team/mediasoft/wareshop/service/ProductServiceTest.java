@@ -2,6 +2,7 @@ package team.mediasoft.wareshop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Pageable;
 import team.mediasoft.wareshop.entity.ProductCategory;
 import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.ProductReadDto;
@@ -26,7 +27,8 @@ class ProductServiceTest extends IntegrationTestBase {
 
     @Test
     void findAllTest() {
-        List<ProductReadDto> result = productService.findAll();
+
+        List<ProductReadDto> result = productService.findAll(Pageable.ofSize(10));
         Optional<ProductReadDto> actual = productService.findById(PRODUCT_UUID_1);
 
         assertThat(result).hasSize(3);
