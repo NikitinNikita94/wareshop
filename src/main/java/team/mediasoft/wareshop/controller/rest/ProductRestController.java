@@ -8,6 +8,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.ProductDtoInfo;
-import team.mediasoft.wareshop.entity.dto.ProductReadDto;
 import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
 import team.mediasoft.wareshop.mapper.ProductMapper;
 import team.mediasoft.wareshop.service.ProductService;
@@ -47,9 +49,9 @@ public class ProductRestController {
                     )
             }
     )
-    public List<ProductDtoInfo> findAll() {
+    public List<ProductDtoInfo> findAll(@PageableDefault(size = 40, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         LocalDateTime.now();
-        return productService.findAll().stream()
+        return productService.findAll(pageable).stream()
                 .map(ProductMapper.INSTANCE::productReadDtoToProductDtoInfo)
                 .toList();
     }
