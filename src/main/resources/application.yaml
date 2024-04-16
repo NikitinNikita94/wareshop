@@ -1,4 +1,29 @@
-spring.profiles.active: local
+server:
+  servlet:
+    context-path: /app
+  port: ${SERVER_PORT:8080}
+
+spring.profiles.active: dev
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+        # show_sql: true
+        format_sql: true
+        hbm2ddl:
+          auto: validate
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yaml
+
+app:
+  pathToFile: src/main/resources/static/out/products.txt
+  scheduling:
+    enabled: false
+    period: 60000 #ms
+    priceIncreasePercentage: 102.7
+    optimization: false
 
 logging:
   level:
