@@ -28,6 +28,8 @@ public class Product implements Serializable {
     private Integer vendorCode;
     @Column(name = "description", nullable = false)
     private String description;
+    /*@Version
+    private Long version;*/
     @Enumerated(value = EnumType.STRING)
     @Column(name = "category", nullable = false)
     private ProductCategory category;
