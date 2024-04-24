@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -35,6 +36,6 @@ public class Product {
     @Column(name = "last_amount_up")
     private LocalDateTime lastUpdateAmount;
     @Column(name = "create_at", nullable = false)
-    private LocalDateTime createAt;
+    private LocalDate createAt;
 
 }

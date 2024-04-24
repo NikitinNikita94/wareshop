@@ -18,7 +18,7 @@
             <column name="price">42000.05</column>
             <column name="amount">10</column>
             <column name="last_amount_up">2015-07-30T16:29:11</column>
-            <column name="create_at">2015-07-30T16:29:11</column>
+            <column name="create_at">2015-07-30</column>
         </insert>
         <insert tableName="product">
             <column name="id">3e9bd5ef-0a49-490f-bb74-c6282f8a56d9</column>
@@ -29,7 +29,7 @@
             <column name="price">70000.82</column>
             <column name="amount">33</column>
             <column name="last_amount_up">2015-07-30T16:29:11</column>
-            <column name="create_at">2015-07-30T16:29:11</column>
+            <column name="create_at">2015-07-30</column>
         </insert>
         <insert tableName="product">
             <column name="id">8a9e75ff-5beb-4ed2-ae8a-fb6711c8bc38</column>
@@ -40,7 +40,7 @@
             <column name="price">32000.105</column>
             <column name="amount">100</column>
             <column name="last_amount_up">2015-07-30T16:29:11</column>
-            <column name="create_at">2015-07-30T16:29:11</column>
+            <column name="create_at">2015-07-30</column>
         </insert>
     </changeSet>
 </databaseChangeLog>

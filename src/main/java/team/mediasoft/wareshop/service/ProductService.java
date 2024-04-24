@@ -43,7 +43,7 @@ public class ProductService {
     public Optional<ProductReadDto> findById(UUID id) {
         return Optional.ofNullable(productRepository.findById(id)
                 .map(ProductMapper.INSTANCE::productToProductReadDto)
-                .orElseThrow(() -> new ProductNotFoundException(id.toString())));
+                .orElseThrow(() -> new ProductNotFoundException("Can't find a product with this id = " + id)));
     }
 
     /**
@@ -75,7 +75,7 @@ public class ProductService {
                 .map(entity -> ProductMapper.INSTANCE.productUpdateDtoToUpdateProduct(entity, productDto))
                 .map(productRepository::saveAndFlush)
                 .map(ProductMapper.INSTANCE::productToProductReadDto)
-                .orElseThrow(() -> new ProductNotFoundException(id.toString())));
+                .orElseThrow(() -> new ProductNotFoundException("Can't find a product with this id = " + id)));
     }
 
     /**
@@ -94,5 +94,4 @@ public class ProductService {
                 })
                 .orElse(false);
     }
-
 }
