@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import team.mediasoft.wareshop.entity.ProductCategory;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -39,7 +40,7 @@ public class ProductReadDto {
 
     @DateTimeFormat(pattern = "YYYY-MM-DD HH:MM:SS")
     LocalDateTime lastUpdateAmount;
-    @DateTimeFormat(pattern = "YYYY-MM-DD HH:MM:SS")
-    LocalDateTime createAt;
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
+    LocalDate createAt;
 
 }
