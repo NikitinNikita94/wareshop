@@ -7,6 +7,7 @@ import org.hibernate.annotations.OptimisticLocking;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -37,7 +38,7 @@ public class Product implements Serializable {
     @Column(name = "last_amount_up")
     private LocalDateTime lastAmountUp;
     @Column(name = "create_at", nullable = false)
-    private LocalDateTime createAt;
+    private LocalDate createAt;
 
     @Override
     public String toString() {
