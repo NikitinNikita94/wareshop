@@ -28,5 +28,4 @@ public class TransactionExecutionAspect implements TransactionSynchronization {
     public void afterCommit() {
         log.info("Transaction time: {} nano-second", System.nanoTime() - startTime.get());
     }
-
 }

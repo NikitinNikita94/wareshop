@@ -15,11 +15,12 @@ public class MarkTimeExecutionAspect {
     @Around("@annotation(team.mediasoft.wareshop.aop.MarkTime)")
     public Object markTimeExecution(ProceedingJoinPoint joinPoint) throws Throwable {
         StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        Object result = joinPoint.proceed();
-        stopWatch.stop();
-        log.info("Метод с названием={}, отработал {} ms", joinPoint.getSignature().getName(), stopWatch.getTime());
-        return result;
+        try {
+            stopWatch.start();
+            return joinPoint.proceed();
+        } finally {
+            stopWatch.stop();
+            log.info("Метод с названием={}, отработал {} ms", joinPoint.getSignature().getName(), stopWatch.getTime());
+        }
     }
-
 }

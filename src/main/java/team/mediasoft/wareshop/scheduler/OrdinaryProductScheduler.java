@@ -20,10 +20,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Profile("dev")
+@Profile("!Local")
 @ConditionalOnMissingBean(OptimizedProductScheduler.class)
-@ConditionalOnExpression("#{${app.scheduling.optimization} == false}")
-@ConditionalOnProperty(prefix = "app.scheduling", name = "enabled", havingValue = "true")
+@ConditionalOnExpression("#{${app.scheduling.optimization} == false && ${app.scheduling.enabled:false} == true}")
 public class OrdinaryProductScheduler {
 
     private final ProductRepository productRepository;
@@ -43,5 +42,4 @@ public class OrdinaryProductScheduler {
 
         log.info("Stop to updating price for Ordinary products");
     }
-
 }

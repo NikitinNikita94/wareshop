@@ -22,7 +22,7 @@ app:
   scheduling:
     enabled: false
     period: 60000 #ms
-    priceIncreasePercentage: 102.7
+    priceIncreasePercentage: 10.7
     optimization: false
 
 logging:

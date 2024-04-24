@@ -27,10 +27,9 @@ import java.util.List;
 
 @Service
 @Slf4j
-@Profile("dev")
+@Profile("!Local")
 @RequiredArgsConstructor
-@ConditionalOnExpression("#{${app.scheduling.optimization} == true}")
-@ConditionalOnProperty(prefix = "app.scheduling", name = "enabled", havingValue = "true")
+@ConditionalOnExpression("#{${app.scheduling.optimization:false} == true && ${app.scheduling.enabled:false} == true}")
 public class OptimizedProductScheduler {
 
     private final JdbcTemplate jdbcTemplate;
