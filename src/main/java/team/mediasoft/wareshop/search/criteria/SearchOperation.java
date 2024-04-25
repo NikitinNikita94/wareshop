@@ -1,4 +1,6 @@
-package team.mediasoft.wareshop.search.common;
+package team.mediasoft.wareshop.search.criteria;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum SearchOperation {
     EQUAL("="),
@@ -12,6 +14,7 @@ public enum SearchOperation {
         this.value = value;
     }
 
+    @JsonCreator
     public static SearchOperation getSimpleOperation(final String value) {
         return switch (value) {
             case "=" -> EQUAL;

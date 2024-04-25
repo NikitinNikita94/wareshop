@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.search.common;
+package team.mediasoft.wareshop.search.criteria;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +9,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchCriteriaDto {
-    private List<SearchCriteria> searchCriteriaList;
+public class SearchCriteriaDto<T> {
+    private List<SearchCriteria<T>> searchCriteriaList;
 }

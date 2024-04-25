@@ -2,9 +2,11 @@ package team.mediasoft.wareshop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.mediasoft.wareshop.data.repository.ProductRepository;
+import team.mediasoft.wareshop.entity.Product;
 import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.ProductReadDto;
 import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
@@ -93,5 +95,18 @@ public class ProductService {
                     return true;
                 })
                 .orElse(false);
+    }
+
+    /**
+     * Находит товары по критериям поиска.
+     *
+     * @param build    спецификация критериев поиска
+     * @param pageable информация о страницах
+     * @return список продуктов, которые соответствуют критериям поиска
+     */
+    public List<ProductReadDto> findBySearchCriteria(Specification<Product> build, Pageable pageable) {
+        return productRepository.findAll(build, pageable).stream()
+                .map(ProductMapper.INSTANCE::productToProductReadDto)
+                .toList();
     }
 }
