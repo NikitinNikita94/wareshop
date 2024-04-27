@@ -12,7 +12,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @Aspect
 public class TransactionExecutionAspect implements TransactionSynchronization {
 
-    @Before("@annotation(org.springframework.transaction.annotation.Transactional)")
+    @Before("@annotation(org.springframework.transaction.annotation.Transactional) ")
     public void registerTransactionExecution() {
         TransactionSynchronizationManager.registerSynchronization(this);
     }
@@ -20,7 +20,7 @@ public class TransactionExecutionAspect implements TransactionSynchronization {
     ThreadLocal<Long> startTime = new ThreadLocal<>();
 
     @Override
-    public void beforeCompletion() {
+    public void beforeCommit(boolean readOnly) {
         startTime.set(System.nanoTime());
     }
 
