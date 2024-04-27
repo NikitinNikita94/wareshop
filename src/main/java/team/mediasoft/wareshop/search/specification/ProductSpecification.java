@@ -1,25 +1,30 @@
 package team.mediasoft.wareshop.search.specification;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 import team.mediasoft.wareshop.entity.Product;
 import team.mediasoft.wareshop.search.criteria.SearchCriteria;
 import team.mediasoft.wareshop.search.criteria.SearchOperation;
 
+import java.util.List;
 import java.util.Objects;
 
+@Component
 @RequiredArgsConstructor
-public class ProductSpecification implements Specification<Product> {
+public class ProductSpecification {
 
-    private final SearchCriteria searchCriteria;
+    private final List<SearchCriteria> searchCriteriaList;
 
-    @Override
-    public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        return switch (Objects.requireNonNull(SearchOperation.getSimpleOperation(
+    public Specification<Product> buildSpecification() {
+        List<Specification<Product>> list = searchCriteriaList.stream()
+                .map(this::getSpecification)
+                .toList();
+        return Specification.allOf(list);
+    }
+
+    private Specification<Product> getSpecification(SearchCriteria searchCriteria) {
+        return (root, query, cb) -> switch (Objects.requireNonNull(SearchOperation.getSimpleOperation(
                 String.valueOf(searchCriteria.getOperation())))) {
             case EQUAL ->
                     searchCriteria.getPredicateStrategy().getEqPredicate(root.get(searchCriteria.getField()), searchCriteria.getValue(), cb);

@@ -10,9 +10,7 @@ import team.mediasoft.wareshop.entity.dto.ProductReadDto;
 import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
 import team.mediasoft.wareshop.integration.IntegrationTestBase;
 import team.mediasoft.wareshop.search.criteria.*;
-import team.mediasoft.wareshop.search.specification.ProductSpecificationBuilder;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -107,16 +105,13 @@ class ProductServiceTest extends IntegrationTestBase {
     @Test
     @SneakyThrows
     void findBySearchCriteria() {
-        List<? extends SearchCriteria<? extends Serializable>> searchCriteria = List.of(
+        List<SearchCriteria> searchCriteria = List.of(
                 new BigDecimalSearchCriteria("price", SearchOperation.GRATER_THAN_OR_EQ, BigDecimal.valueOf(400)),
                 new LocalDateSearchCriteria("createAt", SearchOperation.EQUAL, LocalDate.of(2015, 7, 30)),
                 new BigDecimalSearchCriteria("price", SearchOperation.LESS_THAN_OR_EQ, BigDecimal.valueOf(70000)),
                 new StringSearchCriteria("name", SearchOperation.LIKE, "Ip"));
-        ProductSpecificationBuilder builder = new ProductSpecificationBuilder();
-        searchCriteria.forEach(builder::with);
 
-
-        List<ProductReadDto> bySearchCriteriaDto = productService.findBySearchCriteria(builder.build(), Pageable.ofSize(2));
+        List<ProductReadDto> bySearchCriteriaDto = productService.findBySearchCriteria(searchCriteria, Pageable.ofSize(2));
         assertNotNull(bySearchCriteriaDto);
         assertEquals(1, bySearchCriteriaDto.size());
     }

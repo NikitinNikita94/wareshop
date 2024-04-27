@@ -2,16 +2,16 @@ package team.mediasoft.wareshop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.mediasoft.wareshop.data.repository.ProductRepository;
-import team.mediasoft.wareshop.entity.Product;
 import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.ProductReadDto;
 import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
 import team.mediasoft.wareshop.exception.ProductNotFoundException;
 import team.mediasoft.wareshop.mapper.ProductMapper;
+import team.mediasoft.wareshop.search.criteria.SearchCriteria;
+import team.mediasoft.wareshop.search.specification.ProductSpecification;
 
 import java.util.List;
 import java.util.Objects;
@@ -100,12 +100,13 @@ public class ProductService {
     /**
      * Находит товары по критериям поиска.
      *
-     * @param build    спецификация критериев поиска
-     * @param pageable информация о страницах
+     * @param searchCriteria спецификация критериев поиска
+     * @param pageable       информация о страницах
      * @return список продуктов, которые соответствуют критериям поиска
      */
-    public List<ProductReadDto> findBySearchCriteria(Specification<Product> build, Pageable pageable) {
-        return productRepository.findAll(build, pageable).stream()
+    public List<ProductReadDto> findBySearchCriteria(List<SearchCriteria> searchCriteria, Pageable pageable) {
+        ProductSpecification specification = new ProductSpecification(searchCriteria);
+        return productRepository.findAll(specification.buildSpecification(), pageable).stream()
                 .map(ProductMapper.INSTANCE::productToProductReadDto)
                 .toList();
     }

@@ -20,11 +20,8 @@ import org.springframework.web.server.ResponseStatusException;
 import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.ProductDtoInfo;
 import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
-import team.mediasoft.wareshop.entity.response.APIResponse;
 import team.mediasoft.wareshop.mapper.ProductMapper;
 import team.mediasoft.wareshop.search.criteria.SearchCriteria;
-import team.mediasoft.wareshop.search.criteria.SearchCriteriaDto;
-import team.mediasoft.wareshop.search.specification.ProductSpecificationBuilder;
 import team.mediasoft.wareshop.service.ProductService;
 
 import java.time.LocalDateTime;
@@ -157,23 +154,12 @@ public class ProductRestController {
                     )
             }
     )
-    public ResponseEntity<APIResponse> searchProduct(@PageableDefault(size = 40, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-                                                     @RequestBody SearchCriteriaDto searchCriteriaDto) {
-        ProductSpecificationBuilder builder = new ProductSpecificationBuilder();
-        List<SearchCriteria> criteriaList = searchCriteriaDto.getSearchCriteriaList();
-        if (criteriaList != null) {
-            criteriaList.forEach(builder::with);
-        }
-
-        List<ProductDtoInfo> productDtoInfos = productService.findBySearchCriteria(builder.build(), pageable).stream()
+    public ResponseEntity<List<ProductDtoInfo>> searchProduct(@PageableDefault(size = 40, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                              @RequestBody List<SearchCriteria> searchCriteria) {
+        List<ProductDtoInfo> productDtoInfos = productService.findBySearchCriteria(searchCriteria, pageable).stream()
                 .map(ProductMapper.INSTANCE::productReadDtoToProductDtoInfo)
                 .toList();
 
-        APIResponse apiResponse = APIResponse.builder()
-                .data(productDtoInfos)
-                .responseCode(HttpStatus.OK)
-                .message("Successfully retrieved product record")
-                .build();
-        return new ResponseEntity<>(apiResponse, apiResponse.responseCode());
+        return ResponseEntity.ok().body(productDtoInfos);
     }
 }
