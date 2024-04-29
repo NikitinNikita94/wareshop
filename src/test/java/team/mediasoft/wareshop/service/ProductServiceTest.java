@@ -30,7 +30,6 @@ class ProductServiceTest extends IntegrationTestBase {
 
     @Test
     void findAllTest() {
-
         List<ProductReadDto> result = productService.findAll(Pageable.ofSize(10));
         Optional<ProductReadDto> actual = productService.findById(PRODUCT_UUID_1);
 
