@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 @Profile("!local")
 @ConditionalOnMissingBean(OptimizedProductScheduler.class)
-@ConditionalOnExpression("#{${app.scheduling.optimization} == false && ${app.scheduling.enabled:false}}")
+@ConditionalOnExpression("${app.scheduling.optimization:false == false} && ${app.scheduling.enabled:false == true}")
 public class OrdinaryProductScheduler {
 
     private final ProductRepository productRepository;

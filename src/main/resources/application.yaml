@@ -6,6 +6,9 @@ server:
 spring.profiles.active: dev
 
 spring:
+  cache:
+    caffeine:
+      spec: 60s
   jpa:
     properties:
       hibernate:
@@ -25,8 +28,13 @@ app:
     priceIncreasePercentage: 10.7
     optimization: false
 
+  currency-service:
+    stub-enabled: false
+    host: http://localhost:8082 # host второго сервиса
+    methods:
+      get-currency: /api/v2/currencies # url эндпоинта с курсами для GET запроса
+    exchangeJson: src/main/resources/json/exchange-rate.json
+
 logging:
   level:
     root: info
-
-

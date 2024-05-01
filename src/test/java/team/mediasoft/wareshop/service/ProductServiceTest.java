@@ -1,7 +1,6 @@
 package team.mediasoft.wareshop.service;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.core.ApplicationContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import team.mediasoft.wareshop.entity.ProductCategory;
@@ -41,7 +40,6 @@ class ProductServiceTest extends IntegrationTestBase {
         actual.ifPresent(product -> assertEquals(result.get(0).getCreateAt(), product.getCreateAt()));
         actual.ifPresent(product -> assertEquals(result.get(0).getCategory(), product.getCategory()));
     }
-
 
     @Test
     void findByIdTest() {

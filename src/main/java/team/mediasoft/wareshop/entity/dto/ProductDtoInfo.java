@@ -14,4 +14,5 @@ public class ProductDtoInfo {
     private ProductCategory category;
     private BigDecimal price;
     private Integer amount;
+    private String currency;
 }

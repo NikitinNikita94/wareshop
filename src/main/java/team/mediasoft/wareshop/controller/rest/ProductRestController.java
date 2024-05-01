@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.ProductDtoInfo;
 import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
+import team.mediasoft.wareshop.exchanger.CurrencyServiceClient;
 import team.mediasoft.wareshop.mapper.ProductMapper;
 import team.mediasoft.wareshop.service.ProductService;
 
@@ -34,6 +35,7 @@ import java.util.UUID;
 public class ProductRestController {
 
     private final ProductService productService;
+    private final CurrencyServiceClient currencyServiceClient;
 
     @GetMapping
     @Operation(
@@ -53,6 +55,7 @@ public class ProductRestController {
         LocalDateTime.now();
         return productService.findAll(pageable).stream()
                 .map(ProductMapper.INSTANCE::productReadDtoToProductDtoInfo)
+                .map(currencyServiceClient::setExchangeRate)
                 .toList();
     }
 
@@ -73,6 +76,7 @@ public class ProductRestController {
     public ResponseEntity<ProductDtoInfo> findById(@PathVariable("id") @Parameter(description = "Идентификатор продукта") UUID id) {
         return productService.findById(id)
                 .map(ProductMapper.INSTANCE::productReadDtoToProductDtoInfo)
+                .map(currencyServiceClient::setExchangeRate)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -138,5 +142,4 @@ public class ProductRestController {
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
     }
-
 }
