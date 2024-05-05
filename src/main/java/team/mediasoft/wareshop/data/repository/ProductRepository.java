@@ -7,9 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import team.mediasoft.wareshop.entity.Product;
-import team.mediasoft.wareshop.entity.dto.ProductReadDto;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,8 +1,8 @@
-package team.mediasoft.wareshop.entity.dto;
+package team.mediasoft.wareshop.entity.dto.product;
 
 import jakarta.validation.constraints.*;
 import lombok.Value;
-import team.mediasoft.wareshop.entity.ProductCategory;
+import team.mediasoft.wareshop.entity.enumeration.ProductCategory;
 
 import java.math.BigDecimal;
 

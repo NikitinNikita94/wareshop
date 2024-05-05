@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <changeSet id="1" author="NikitinN">
+    <changeSet id="1" author="Nikitin-Nikita">
         <preConditions>
             <not>
                 <tableExists tableName="product"/>
@@ -24,9 +24,6 @@
             <column name="description" type="VARCHAR(256)">
                 <constraints nullable="false"/>
             </column>
-            <!--<column name="version" type="BIGSERIAL">
-                <constraints nullable="false"/>
-            </column>-->
             <column name="category" type="VARCHAR(64)">
                 <constraints nullable="false"/>
             </column>

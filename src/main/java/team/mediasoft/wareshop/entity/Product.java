@@ -2,8 +2,7 @@ package team.mediasoft.wareshop.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
+import team.mediasoft.wareshop.entity.enumeration.ProductCategory;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

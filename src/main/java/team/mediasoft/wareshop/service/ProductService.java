@@ -1,14 +1,13 @@
 package team.mediasoft.wareshop.service;
 
-import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.mediasoft.wareshop.data.repository.ProductRepository;
-import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
-import team.mediasoft.wareshop.entity.dto.ProductReadDto;
-import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
+import team.mediasoft.wareshop.entity.dto.product.ProductCreateEditDto;
+import team.mediasoft.wareshop.entity.dto.product.ProductReadDto;
+import team.mediasoft.wareshop.entity.dto.product.ProductUpdateDto;
 import team.mediasoft.wareshop.exception.ProductNotFoundException;
 import team.mediasoft.wareshop.mapper.ProductMapper;
 import team.mediasoft.wareshop.search.criteria.SearchCriteria;

@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
-import team.mediasoft.wareshop.entity.ProductCategory;
-import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
-import team.mediasoft.wareshop.entity.dto.ProductReadDto;
-import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
+import team.mediasoft.wareshop.entity.enumeration.ProductCategory;
+import team.mediasoft.wareshop.entity.dto.product.ProductCreateEditDto;
+import team.mediasoft.wareshop.entity.dto.product.ProductReadDto;
+import team.mediasoft.wareshop.entity.dto.product.ProductUpdateDto;
 import team.mediasoft.wareshop.integration.IntegrationTestBase;
 import team.mediasoft.wareshop.search.criteria.*;
 
