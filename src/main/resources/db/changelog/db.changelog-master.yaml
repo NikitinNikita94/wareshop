@@ -9,3 +9,9 @@ databaseChangeLog:
       file: db/changelog/table/db.changelog-order-1.3.0.xml
   - include:
       file: db/changelog/data/db.changelog-product-insert-1.0.0.xml
+  - include:
+      file: db/changelog/data/db.changelog-customer-insert-1.1.0.xml
+  - include:
+      file: db/changelog/data/db.changelog-order-insert-1.2.0.xml
+  - include:
+      file: db/changelog/table/db.changelog-order-product-1.4.0.xml

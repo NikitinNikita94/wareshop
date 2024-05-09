@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="Nikitin-Nikita">
+        <preConditions>
+            <tableExists tableName="customer"/>
+        </preConditions>
+        <insert tableName="customer">
+            <column name="id">1</column>
+            <column name="login">UserOleg</column>
+            <column name="email">useroleg@gmail.com</column>
+            <column name="is_active">true</column>
+        </insert>
+        <insert tableName="customer">
+            <column name="id">2</column>
+            <column name="login">UserVlad</column>
+            <column name="email">uservlad@gmail.com</column>
+            <column name="is_active">true</column>
+        </insert>
+        <insert tableName="customer">
+            <column name="id">3</column>
+            <column name="login">UserViktor</column>
+            <column name="email">userviktor@mail.com</column>
+            <column name="is_active">false</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

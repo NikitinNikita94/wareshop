@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="Nikitin-Nikita">
+        <preConditions>
+            <tableExists tableName="orders"/>
+        </preConditions>
+        <insert tableName="orders">
+            <column name="id">4bcba4bd-614b-4d2e-a78b-d0e4db257c5d</column>
+            <column name="customer_id">1</column>
+            <column name="status">CREATED</column>
+            <column name="delivery_address">St.One_Address</column>
+        </insert>
+        <insert tableName="orders">
+            <column name="id">47af3595-4878-48aa-b201-0df08c45b6b5</column>
+            <column name="customer_id">2</column>
+            <column name="status">CONFIRMED</column>
+            <column name="delivery_address">St.Second_Address</column>
+        </insert>
+        <insert tableName="orders">
+            <column name="id">5ea5c521-7fca-48db-875f-1305c772feb5</column>
+            <column name="customer_id">1</column>
+            <column name="status">CREATED</column>
+            <column name="delivery_address">St.None_Address</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
