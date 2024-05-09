@@ -1,6 +1,7 @@
 package team.mediasoft.wareshop.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 import team.mediasoft.wareshop.entity.ProductCategory;
@@ -8,8 +9,10 @@ import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.ProductReadDto;
 import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
 import team.mediasoft.wareshop.integration.IntegrationTestBase;
+import team.mediasoft.wareshop.search.criteria.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -95,5 +98,19 @@ class ProductServiceTest extends IntegrationTestBase {
     void deleteTest() {
         assertFalse(productService.delete(fromString("64a36c6d-eeea-4249-891f-70071ac7ad1e")));
         assertTrue(productService.delete(PRODUCT_UUID_1));
+    }
+
+    @Test
+    @SneakyThrows
+    void findBySearchCriteria() {
+        List<SearchCriteria> searchCriteria = List.of(
+                new BigDecimalSearchCriteria("price", SearchOperation.GRATER_THAN_OR_EQ, BigDecimal.valueOf(400)),
+                new LocalDateSearchCriteria("createAt", SearchOperation.EQUAL, LocalDate.of(2015, 7, 30)),
+                new BigDecimalSearchCriteria("price", SearchOperation.LESS_THAN_OR_EQ, BigDecimal.valueOf(70000)),
+                new StringSearchCriteria("name", SearchOperation.LIKE, "Ip"));
+
+        List<ProductReadDto> bySearchCriteriaDto = productService.findBySearchCriteria(searchCriteria, Pageable.ofSize(2));
+        assertNotNull(bySearchCriteriaDto);
+        assertEquals(1, bySearchCriteriaDto.size());
     }
 }

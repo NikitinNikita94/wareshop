@@ -22,6 +22,7 @@ import team.mediasoft.wareshop.entity.dto.ProductDtoInfo;
 import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
 import team.mediasoft.wareshop.exchanger.CurrencyServiceClient;
 import team.mediasoft.wareshop.mapper.ProductMapper;
+import team.mediasoft.wareshop.search.criteria.SearchCriteria;
 import team.mediasoft.wareshop.service.ProductService;
 
 import java.time.LocalDateTime;
@@ -141,5 +142,28 @@ public class ProductRestController {
         return productService.delete(id)
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/search")
+    @Operation(
+            summary = "Поиск продуктов про критериям",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Запрос выполнен",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    array = @ArraySchema(schema = @Schema(implementation = ProductDtoInfo.class))
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<List<ProductDtoInfo>> searchProduct(@PageableDefault(size = 40, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                              @RequestBody List<SearchCriteria> searchCriteria) {
+        List<ProductDtoInfo> productDtoInfos = productService.findBySearchCriteria(searchCriteria, pageable).stream()
+                .map(ProductMapper.INSTANCE::productReadDtoToProductDtoInfo)
+                .toList();
+
+        return ResponseEntity.ok().body(productDtoInfos);
     }
 }

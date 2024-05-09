@@ -11,6 +11,8 @@ import team.mediasoft.wareshop.entity.dto.ProductReadDto;
 import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
 import team.mediasoft.wareshop.exception.ProductNotFoundException;
 import team.mediasoft.wareshop.mapper.ProductMapper;
+import team.mediasoft.wareshop.search.criteria.SearchCriteria;
+import team.mediasoft.wareshop.search.specification.ProductSpecification;
 
 import java.util.List;
 import java.util.Objects;
@@ -94,5 +96,19 @@ public class ProductService {
                     return true;
                 })
                 .orElse(false);
+    }
+
+    /**
+     * Находит товары по критериям поиска.
+     *
+     * @param searchCriteria спецификация критериев поиска
+     * @param pageable       информация о страницах
+     * @return список продуктов, которые соответствуют критериям поиска
+     */
+    public List<ProductReadDto> findBySearchCriteria(List<SearchCriteria> searchCriteria, Pageable pageable) {
+        ProductSpecification specification = new ProductSpecification(searchCriteria);
+        return productRepository.findAll(specification.buildSpecification(), pageable).stream()
+                .map(ProductMapper.INSTANCE::productToProductReadDto)
+                .toList();
     }
 }
