@@ -1,22 +1,21 @@
 package team.mediasoft.wareshop.exchanger.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.math.BigDecimal;
+public enum Currency {
+    CNY,
+    USD,
+    EUR,
+    RUB;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Currency {
-    @JsonProperty("CNY")
-    private BigDecimal cny;
-    @JsonProperty("USD")
-    private BigDecimal usd;
-    @JsonProperty("EUR")
-    private BigDecimal eur;
+    @JsonCreator
+    public static Currency getCurrency(final String value) {
+        return switch (value) {
+            case "CNY" -> CNY;
+            case "USD" -> USD;
+            case "EUR" -> EUR;
+            case ""-> RUB;
+            default -> null;
+        };
+    }
 }

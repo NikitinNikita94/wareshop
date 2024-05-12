@@ -3,6 +3,7 @@ package team.mediasoft.wareshop.entity.dto;
 import lombok.Getter;
 import lombok.Setter;
 import team.mediasoft.wareshop.entity.ProductCategory;
+import team.mediasoft.wareshop.exchanger.model.Currency;
 
 import java.math.BigDecimal;
 
@@ -14,5 +15,5 @@ public class ProductDtoInfo {
     private ProductCategory category;
     private BigDecimal price;
     private Integer amount;
-    private String currency;
+    private Currency currency;
 }
