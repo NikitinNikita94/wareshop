@@ -48,16 +48,14 @@ public class OrderRestController {
                             responseCode = "201",
                             description = "Запрос выполнен",
                             content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ReadOrderDto.class)
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE
                             )
                     )
             }
     )
-    public ResponseEntity<ReadOrderDto> createOrder(@RequestHeader(value = "customerId") long customerId,
-                                                    @RequestBody @Validated CreateOrderDto createOrderDto) {
-        ReadOrderDto order = orderService.createOrder(customerId, createOrderDto);
-        return ResponseEntity.ok(order);
+    public void createOrder(@RequestHeader(value = "customerId") long customerId,
+                            @RequestBody @Validated CreateOrderDto createOrderDto) {
+        orderService.createOrder(customerId, createOrderDto);
     }
 
     @PatchMapping("/{orderId}")
@@ -71,11 +69,10 @@ public class OrderRestController {
                     )
             }
     )
-    public ResponseEntity<OrderDtoIfo> updateOrder(@RequestHeader(value = "customerId") long customerId,
-                                                   @PathVariable @Parameter(description = "Идентификатор заказа") UUID orderId,
-                                                   @RequestBody List<CreateOrderProductDtoInfo> createOrderProductDtoInfo) {
-        OrderDtoIfo orderDtoIfo = orderService.updateOrder(customerId, orderId, createOrderProductDtoInfo);
-        return ResponseEntity.ok(orderDtoIfo);
+    public void updateOrder(@RequestHeader(value = "customerId") long customerId,
+                            @PathVariable @Parameter(description = "Идентификатор заказа") UUID orderId,
+                            @RequestBody List<CreateOrderProductDtoInfo> createOrderProductDtoInfo) {
+        orderService.updateOrder(customerId, orderId, createOrderProductDtoInfo);
     }
 
     @GetMapping("/{orderId}")
@@ -92,10 +89,9 @@ public class OrderRestController {
                     )
             }
     )
-    public ResponseEntity<OrderDtoIfo> getOrderById(@RequestHeader(value = "customerId") long customerId,
-                                                    @PathVariable @Parameter(description = "Идентификатор заказа") UUID orderId) {
-        OrderDtoIfo orderById = orderService.findOrderById(customerId, orderId);
-        return ResponseEntity.ok(orderById);
+    public OrderDtoIfo getOrderById(@RequestHeader(value = "customerId") long customerId,
+                                    @PathVariable @Parameter(description = "Идентификатор заказа") UUID orderId) {
+        return orderService.findOrderById(customerId, orderId);
     }
 
     @DeleteMapping("/{orderId}")
@@ -112,11 +108,9 @@ public class OrderRestController {
                     )
             }
     )
-    public ResponseEntity<?> delete(@RequestHeader(value = "customerId") long customerId,
-                                    @PathVariable("orderId") @Parameter(description = "Идентификатор заказа") UUID orderId) {
-        return orderService.delete(customerId, orderId)
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.notFound().build();
+    public void delete(@RequestHeader(value = "customerId") long customerId,
+                       @PathVariable("orderId") @Parameter(description = "Идентификатор заказа") UUID orderId) {
+        orderService.delete(customerId, orderId);
     }
 
     @PostMapping("/{orderId}/confirm")
@@ -136,9 +130,8 @@ public class OrderRestController {
                     )
             }
     )
-    public ResponseEntity<ReadOrderDto> updateOrderStatus(@RequestBody OrderStatusDto status,
-                                                          @PathVariable @Parameter(description = "Идентификатор заказа")  UUID orderId) {
-        ReadOrderDto readOrderDto = orderService.updateStatus(status, orderId);
-        return ResponseEntity.ok(readOrderDto);
+    public ReadOrderDto updateOrderStatus(@RequestBody OrderStatusDto status,
+                                          @PathVariable @Parameter(description = "Идентификатор заказа") UUID orderId) {
+        return orderService.updateStatus(status, orderId);
     }
 }

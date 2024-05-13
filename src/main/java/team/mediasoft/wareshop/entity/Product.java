@@ -1,5 +1,6 @@
 package team.mediasoft.wareshop.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -64,7 +65,7 @@ public class Product implements Serializable {
     @Column(name = "create_at", nullable = false)
     private LocalDate createAt;
 
-    @OneToMany(mappedBy = "pk.product", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
     @Override

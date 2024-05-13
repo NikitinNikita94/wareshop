@@ -1,5 +1,6 @@
 package team.mediasoft.wareshop.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,8 +18,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import team.mediasoft.wareshop.entity.enumeration.OrderStatus;
 
 import java.io.Serializable;
@@ -50,7 +49,6 @@ public class Order implements Serializable {
     @Column(name = "delivery_address", nullable = false)
     private String deliveryAddress;
 
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "pk.order", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 }
