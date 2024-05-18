@@ -21,6 +21,7 @@ import team.mediasoft.wareshop.entity.enumeration.OrderStatus;
 import team.mediasoft.wareshop.exception.CustomerNotFoundException;
 import team.mediasoft.wareshop.exception.OrderNotFoundException;
 import team.mediasoft.wareshop.exception.ProductAvailableException;
+import team.mediasoft.wareshop.exception.ProductNotFoundException;
 import team.mediasoft.wareshop.mapper.OrderMapper;
 
 import java.util.List;
@@ -61,10 +62,7 @@ public class OrderService {
 
         Map<UUID, Product> productMap = getUuidProductMap(createOrderDto.getProducts());
         List<OrderItem> orderItems = createOrderDto.getProducts().stream()
-                .map(orderItemProduct -> {
-                    Product product = productMap.get(orderItemProduct.productId());
-                    return createOrderItem(orderItemProduct, product, newOrder);
-                })
+                .map(orderItem -> createOrderItem(orderItem, productMap, newOrder))
                 .toList();
         newOrder.setOrderItems(orderItems);
         orderRepository.save(newOrder);
@@ -72,7 +70,7 @@ public class OrderService {
     }
 
     /**
-     * Метод добавляет новые товары к заказу.
+     * Метод добавляет новые товары к заказу или обновляет старые.
      *
      * @param customerId                - айди клиента
      * @param orderId                   - айди заказа
@@ -82,17 +80,36 @@ public class OrderService {
     public void updateOrder(long customerId, UUID orderId, List<CreateOrderProductDtoInfo> createOrderProductDtoInfo) {
         Order updateOrder = checkCustomerAndOrderStatusById(customerId, orderId);
 
-        Map<UUID, Product> uuidProductMap = getUuidProductMap(createOrderProductDtoInfo);
-        List<Product> addedListProductByOrder = updateOrder.getOrderItems().stream()
-                .map(OrderItem::getProduct)
-                .toList();
+        Map<UUID, Product> productMap = getUuidProductMap(createOrderProductDtoInfo);
+        Map<UUID, OrderItem> orderProductMap = updateOrder.getOrderItems().stream()
+                .collect(toMap(oi -> oi.getProduct().getId(), Function.identity()));
 
-        createOrderProductDtoInfo.stream()
-                .filter(newProduct -> !addedListProductByOrder.contains(uuidProductMap.get(newProduct.productId())))
-                .forEach(orderItemProduct -> {
-                    Product product = uuidProductMap.get(orderItemProduct.productId());
-                    updateOrder.getOrderItems().add(createOrderItem(orderItemProduct, product, updateOrder));
-                });
+        createOrderProductDtoInfo.forEach(orderInfo -> {
+            final UUID productId = orderInfo.productId();
+            int orderQuantity = orderInfo.quantity();
+            final Product product = productMap.get(productId);
+
+            checkProductByException(product, productId, orderQuantity);
+            Optional.ofNullable(orderProductMap.get(orderInfo.productId()))
+                    .ifPresentOrElse(
+                            item -> {
+                                item.setQuantity(item.getQuantity() + orderQuantity);
+                                item.setPrice(product.getPrice());
+                            },
+                            () -> {
+                                final OrderItem newOrderItem = OrderItem.builder()
+                                        .pk(new OrderItemPk(updateOrder.getId(), productId))
+                                        .order(updateOrder)
+                                        .product(product)
+                                        .quantity(orderQuantity)
+                                        .price(product.getPrice())
+                                        .build();
+                                updateOrder.getOrderItems().add(newOrderItem);
+                            }
+                    );
+            product.setAmount(product.getAmount() - orderQuantity);
+        });
+
 
         orderRepository.save(updateOrder);
         log.info("Заказ успешно обновлен.");
@@ -189,21 +206,46 @@ public class OrderService {
     }
 
     /**
-     * Метод по созданию товаров заказа.
+     * Метод по созданию объектов заказа.
      *
-     * @param dtoInfo  - информация о продукте.
-     * @param product  - продукт.
-     * @param newOrder - заказ.
-     * @return OrderItem - товары одного заказа.
+     * @param orderItem  - объекты заказа.
+     * @param productMap - ассоциативный массив объектов и айди продукта.
+     * @param newOrder   - новый заказ.
+     * @return OrderItem
      */
-    private static OrderItem createOrderItem(CreateOrderProductDtoInfo dtoInfo, Product product, Order newOrder) {
-        if (product.getIsAvailable() && product.getAmount() >= dtoInfo.quantity()) {
-            product.setAmount(product.getAmount() - dtoInfo.quantity());
-            return new OrderItem(new OrderItemPk(newOrder.getId(), product.getId()),
-                    newOrder, product, dtoInfo.quantity(), product.getPrice());
-        } else {
-            throw new ProductAvailableException("Продукт не доступен " + "getIsAvailable=" + product.getIsAvailable() +
-                                                " или недостает количества " + "amount=" + product.getAmount());
+    private OrderItem createOrderItem(CreateOrderProductDtoInfo orderItem, Map<UUID, Product> productMap, Order newOrder) {
+        final UUID productId = orderItem.productId();
+        int orderedQuantity = orderItem.quantity();
+        final Product product = productMap.get(orderItem.productId());
+
+        checkProductByException(product, productId, orderedQuantity);
+        product.setAmount(product.getAmount() - orderedQuantity);
+
+        return OrderItem.builder()
+                .pk(new OrderItemPk(newOrder.getId(), productId))
+                .product(product)
+                .order(newOrder)
+                .quantity(orderedQuantity)
+                .price(product.getPrice())
+                .build();
+    }
+
+    /**
+     * Метод для проверки продукта.
+     *
+     * @param product         - продукт.
+     * @param productId       - айди продукта.
+     * @param orderedQuantity - количество товара.
+     */
+    private void checkProductByException(Product product, UUID productId, int orderedQuantity) {
+        if (product == null) {
+            throw new ProductNotFoundException("Товар с указанным id=" + productId + " не найден.");
+        }
+        if (product.getAmount() < orderedQuantity) {
+            throw new OrderNotFoundException("Не достаточное количество товара на складе.");
+        }
+        if (!product.getIsAvailable()) {
+            throw new ProductAvailableException("Продукт не доступен к заказу productId=" + productId);
         }
     }
 }
