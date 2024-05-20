@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import team.mediasoft.wareshop.exchanger.util.RestProperties;
+import team.mediasoft.wareshop.util.RestProperties;
 
 @SpringBootApplication
 @EnableCaching

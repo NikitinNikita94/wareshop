@@ -13,6 +13,8 @@ import team.mediasoft.wareshop.exchanger.model.Currency;
 import team.mediasoft.wareshop.exchanger.model.CurrencyProvider;
 import team.mediasoft.wareshop.exchanger.service.ExchangeRateProvider;
 import team.mediasoft.wareshop.mapper.ProductMapper;
+import team.mediasoft.wareshop.search.criteria.SearchCriteria;
+import team.mediasoft.wareshop.search.specification.ProductSpecification;
 
 import java.math.RoundingMode;
 import java.util.List;
@@ -101,6 +103,20 @@ public class ProductService {
                     return true;
                 })
                 .orElse(false);
+    }
+
+    /**
+     * Находит товары по критериям поиска.
+     *
+     * @param searchCriteria спецификация критериев поиска
+     * @param pageable       информация о страницах
+     * @return список продуктов, которые соответствуют критериям поиска
+     */
+    public List<ProductReadDto> findBySearchCriteria(List<SearchCriteria> searchCriteria, Pageable pageable) {
+        ProductSpecification specification = new ProductSpecification(searchCriteria);
+        return productRepository.findAll(specification.buildSpecification(), pageable).stream()
+                .map(ProductMapper.INSTANCE::productToProductReadDto)
+                .toList();
     }
 
     private ProductReadDto setPriceAndCurrencyToDto(ProductReadDto dto) {

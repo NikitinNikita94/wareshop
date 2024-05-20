@@ -20,7 +20,8 @@ app:
   rest:
     currency-service:
       host: http://localhost:8082 # host второго сервиса
-      method: /api/v2/currencies # url эндпоинта с курсами для GET запроса
+      methods:
+        - /api/v2/currencies # url эндпоинта с курсами для GET запроса
       mock:
         enabled: true
       file: src/main/resources/json/exchange-rate.json

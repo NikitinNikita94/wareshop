@@ -8,7 +8,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import team.mediasoft.wareshop.exchanger.model.Currency;
 import team.mediasoft.wareshop.exchanger.model.ExchangeRate;
-import team.mediasoft.wareshop.exchanger.util.RestProperties;
+import team.mediasoft.wareshop.util.RestProperties;
 
 import java.math.BigDecimal;
 import java.nio.file.Path;

@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.util.retry.Retry;
 import team.mediasoft.wareshop.exchanger.model.ExchangeRate;
-import team.mediasoft.wareshop.exchanger.util.RestProperties;
+import team.mediasoft.wareshop.util.RestProperties;
 
 import java.time.Duration;
 
@@ -25,7 +25,7 @@ public class CurrencyServiceClientImpl implements CurrencyServiceClient {
     public ExchangeRate getExchangeRate() {
         return webClient
                 .get()
-                .uri(properties.method())
+                .uri(properties.methods().get(0))
                 .retrieve()
                 .bodyToFlux(ExchangeRate.class)
                 .onErrorResume(err -> Flux.empty())
