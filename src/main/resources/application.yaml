@@ -18,11 +18,11 @@ app:
     currency-service:
       host: http://localhost:8082 # host второго сервиса
       methods:
-        - url: /api/v2/currencies # url эндпоинта с курсами для GET запроса
-        - url: /api/v2/login/account-number # url эндпоинта для POST запроса для получения account-number
-        - url: /api/v2/login/account-inn  # url эндпоинта для POST запроса для получения account-inn
+        - /api/v2/currencies # url эндпоинта с курсами для GET запроса
+        - /api/v2/account-number # url эндпоинта для POST запроса для получения account-number
+        - /api/v2/account-inn  # url эндпоинта для POST запроса для получения account-inn
       mock:
-        enabled: true
+        enabled: false
       file: src/main/resources/json/exchange-rate.json
 
 logging:

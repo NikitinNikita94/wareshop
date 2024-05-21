@@ -21,14 +21,17 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import team.mediasoft.wareshop.businesslogic.service.ProductFullInfoService;
 import team.mediasoft.wareshop.entity.dto.order.CreateOrderDto;
 import team.mediasoft.wareshop.entity.dto.order.CreateOrderProductDtoInfo;
 import team.mediasoft.wareshop.entity.dto.order.OrderDtoIfo;
+import team.mediasoft.wareshop.entity.dto.order.OrderInfo;
 import team.mediasoft.wareshop.entity.dto.order.OrderStatusDto;
 import team.mediasoft.wareshop.entity.dto.order.ReadOrderDto;
 import team.mediasoft.wareshop.service.OrderService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -38,6 +41,7 @@ import java.util.UUID;
 public class OrderRestController {
 
     private final OrderService orderService;
+    private final ProductFullInfoService productFullInfoService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -133,5 +137,10 @@ public class OrderRestController {
     public ReadOrderDto updateOrderStatus(@RequestBody OrderStatusDto status,
                                           @PathVariable @Parameter(description = "Идентификатор заказа") UUID orderId) {
         return orderService.updateStatus(status, orderId);
+    }
+
+    @GetMapping(value = "/info/product-all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<UUID, List<OrderInfo>> getOrderInformation() {
+        return productFullInfoService.getOrderInfo();
     }
 }

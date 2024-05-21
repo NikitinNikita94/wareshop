@@ -4,12 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
-import team.mediasoft.wareshop.entity.enumeration.ProductCategory;
 import team.mediasoft.wareshop.entity.dto.product.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.product.ProductReadDto;
 import team.mediasoft.wareshop.entity.dto.product.ProductUpdateDto;
+import team.mediasoft.wareshop.entity.enumeration.ProductCategory;
 import team.mediasoft.wareshop.integration.IntegrationTestBase;
-import team.mediasoft.wareshop.search.criteria.*;
+import team.mediasoft.wareshop.search.criteria.BigDecimalSearchCriteria;
+import team.mediasoft.wareshop.search.criteria.LocalDateSearchCriteria;
+import team.mediasoft.wareshop.search.criteria.SearchCriteria;
+import team.mediasoft.wareshop.search.criteria.SearchOperation;
+import team.mediasoft.wareshop.search.criteria.StringSearchCriteria;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,7 +23,10 @@ import java.util.UUID;
 
 import static java.util.UUID.fromString;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RequiredArgsConstructor
 class ProductServiceTest extends IntegrationTestBase {
@@ -76,7 +83,7 @@ class ProductServiceTest extends IntegrationTestBase {
     void updateTest() {
         ProductUpdateDto productUpdateDto = new ProductUpdateDto(
                 "Телефон LG",
-                252,
+                123,
                 "Мобильный телефон",
                 ProductCategory.MOBILE,
                 BigDecimal.valueOf(44_098.90),
