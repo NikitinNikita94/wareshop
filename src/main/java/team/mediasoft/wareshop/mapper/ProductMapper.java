@@ -19,7 +19,8 @@ public interface ProductMapper {
 
     @Mappings({
             @Mapping(target = "lastAmountUp", expression = "java(java.time.LocalDateTime.now())"),
-            @Mapping(target = "createAt", expression = "java(java.time.LocalDate.now())")
+            @Mapping(target = "createAt", expression = "java(java.time.LocalDate.now())"),
+
     })
     Product productCreateEditDtoToProduct(ProductCreateEditDto productCreateEditDto);
 

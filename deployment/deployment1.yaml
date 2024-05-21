@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: myspace
+  name: demok8s-deployment
+  labels:
+    app: demok8s-app
+spec:
+  #  strategy:
+  #    type: RollingUpdate #еще есть Recreate
+  replicas: 2
+  selector:
+    matchLabels:
+      app: demok8s-app
+  template:
+    metadata:
+      labels:
+        app: demok8s-app
+    spec:
+      containers:
+        - name: demok8s-app
+          image: nikitinnikita/k8_test:v5
+          ports:
+            - containerPort: 8080
+              name: app
+
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /app/api/v1/products
+            failureThreshold: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /app/api/v1/products
+            failureThreshold: 1
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              port: 8080
+              path: /app/api/v1/products
+            failureThreshold: 30
+            periodSeconds: 10
+
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "local"
