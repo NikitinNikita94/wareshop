@@ -3,12 +3,12 @@ server:
     context-path: /app
   port: ${SERVER_PORT:8080}
 
-spring.profiles.active: dev
-
 spring:
   cache:
     caffeine:
       spec: 60s
+  profiles:
+    active: dev
 
 app:
   pathToFile: src/main/resources/static/out/products.txt

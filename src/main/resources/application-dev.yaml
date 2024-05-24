@@ -8,10 +8,10 @@ spring:
     properties:
       hibernate:
         show_sql: true
-        format_sql: true
+        # format_sql: true
         hbm2ddl:
           auto: validate
           enabled: true
           database-platform: org.hibernate.dialect.PostgreSQLDialect
-      liquibase:
-        change-log: db/changelog/db.changelog-master.yaml
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yaml

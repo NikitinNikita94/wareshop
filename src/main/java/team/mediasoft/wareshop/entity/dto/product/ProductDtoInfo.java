@@ -1,8 +1,8 @@
-package team.mediasoft.wareshop.entity.dto;
+package team.mediasoft.wareshop.entity.dto.product;
 
 import lombok.Getter;
 import lombok.Setter;
-import team.mediasoft.wareshop.entity.ProductCategory;
+import team.mediasoft.wareshop.entity.enumeration.ProductCategory;
 import team.mediasoft.wareshop.exchanger.model.Currency;
 
 import java.math.BigDecimal;

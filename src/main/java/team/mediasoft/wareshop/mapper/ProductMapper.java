@@ -6,10 +6,10 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 import team.mediasoft.wareshop.entity.Product;
-import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
-import team.mediasoft.wareshop.entity.dto.ProductDtoInfo;
-import team.mediasoft.wareshop.entity.dto.ProductReadDto;
-import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
+import team.mediasoft.wareshop.entity.dto.product.ProductCreateEditDto;
+import team.mediasoft.wareshop.entity.dto.product.ProductDtoInfo;
+import team.mediasoft.wareshop.entity.dto.product.ProductReadDto;
+import team.mediasoft.wareshop.entity.dto.product.ProductUpdateDto;
 
 @Mapper
 public interface ProductMapper {

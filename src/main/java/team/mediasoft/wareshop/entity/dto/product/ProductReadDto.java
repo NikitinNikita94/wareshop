@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.entity.dto;
+package team.mediasoft.wareshop.entity.dto.product;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import team.mediasoft.wareshop.entity.ProductCategory;
+import team.mediasoft.wareshop.entity.enumeration.ProductCategory;
 import team.mediasoft.wareshop.exchanger.model.Currency;
 
 import java.math.BigDecimal;
