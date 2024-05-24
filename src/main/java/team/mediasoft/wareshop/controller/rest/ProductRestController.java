@@ -77,12 +77,8 @@ public class ProductRestController {
                     )
             }
     )
-    public ResponseEntity<ProductDtoInfo> findById(@PathVariable("id") @Parameter(description = "Идентификатор продукта") UUID id) {
-        return productService.findById(id)
-                .map(ProductMapper.INSTANCE::productReadDtoToProductDtoInfo)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+    public ProductDtoInfo findById(@PathVariable("id") @Parameter(description = "Идентификатор продукта") UUID id) {
+        return ProductMapper.INSTANCE.productReadDtoToProductDtoInfo(productService.findById(id));
     }
 
     @PostMapping

@@ -38,7 +38,7 @@ class ProductServiceTest extends IntegrationTestBase {
     @Test
     void findAllTest() {
         List<ProductReadDto> result = productService.findAll(Pageable.ofSize(10));
-        Optional<ProductReadDto> actual = productService.findById(PRODUCT_UUID_1);
+        Optional<ProductReadDto> actual = Optional.of(productService.findById(PRODUCT_UUID_1));
 
         assertThat(result).hasSize(3);
         actual.ifPresent(product -> assertEquals(result.get(0).getName(), product.getName()));
@@ -51,10 +51,9 @@ class ProductServiceTest extends IntegrationTestBase {
         actual.ifPresent(product -> assertEquals(result.get(0).getCategory(), product.getCategory()));
     }
 
-
     @Test
     void findByIdTest() {
-        Optional<ProductReadDto> maybeProduct = productService.findById(PRODUCT_UUID_1);
+        Optional<ProductReadDto> maybeProduct = Optional.of(productService.findById(PRODUCT_UUID_1));
         assertTrue(maybeProduct.isPresent());
         maybeProduct.ifPresent(product -> assertEquals(PRODUCT_NAME_1, product.getName()));
     }

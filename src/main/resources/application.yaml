@@ -6,6 +6,9 @@ server:
 spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
+  cache:
+    caffeine:
+      spec: 60s
 
 app:
   pathToFile: src/main/resources/static/out/products.txt
