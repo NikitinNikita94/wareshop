@@ -15,7 +15,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import team.mediasoft.wareshop.entity.dto.product.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.product.ProductDtoInfo;
@@ -24,7 +32,6 @@ import team.mediasoft.wareshop.mapper.ProductMapper;
 import team.mediasoft.wareshop.search.criteria.SearchCriteria;
 import team.mediasoft.wareshop.service.ProductService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,7 +58,6 @@ public class ProductRestController {
             }
     )
     public List<ProductDtoInfo> findAll(@PageableDefault(size = 40, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        LocalDateTime.now();
         return productService.findAll(pageable).stream()
                 .map(ProductMapper.INSTANCE::productReadDtoToProductDtoInfo)
                 .toList();
@@ -71,12 +77,8 @@ public class ProductRestController {
                     )
             }
     )
-    public ResponseEntity<ProductDtoInfo> findById(@PathVariable("id") @Parameter(description = "Идентификатор продукта") UUID id) {
-        return productService.findById(id)
-                .map(ProductMapper.INSTANCE::productReadDtoToProductDtoInfo)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+    public ProductDtoInfo findById(@PathVariable("id") @Parameter(description = "Идентификатор продукта") UUID id) {
+        return ProductMapper.INSTANCE.productReadDtoToProductDtoInfo(productService.findById(id));
     }
 
     @PostMapping

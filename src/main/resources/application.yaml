@@ -4,6 +4,9 @@ server:
   port: ${SERVER_PORT:8080}
 
 spring:
+  cache:
+    caffeine:
+      spec: 60s
   profiles:
     active: dev
 
@@ -14,6 +17,14 @@ app:
     period: 60000 #ms
     priceIncreasePercentage: 10.7
     optimization: false
+  rest:
+    currency-service:
+      host: http://localhost:8082 # host второго сервиса
+      methods:
+        - /api/v2/currencies # url эндпоинта с курсами для GET запроса
+      mock:
+        enabled: true
+      file: src/main/resources/json/exchange-rate.json
 
 logging:
   level:
