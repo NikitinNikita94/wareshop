@@ -6,16 +6,9 @@ server:
 spring.profiles.active: dev
 
 spring:
-  jpa:
-    properties:
-      hibernate:
-        jdbc:
-        # show_sql: true
-        format_sql: true
-        hbm2ddl:
-          auto: validate
-  liquibase:
-    change-log: db/changelog/db.changelog-master.yaml
+  cache:
+    caffeine:
+      spec: 60s
 
 app:
   pathToFile: src/main/resources/static/out/products.txt
@@ -24,9 +17,15 @@ app:
     period: 60000 #ms
     priceIncreasePercentage: 10.7
     optimization: false
+  rest:
+    currency-service:
+      host: http://localhost:8082 # host второго сервиса
+      methods:
+        - /api/v2/currencies # url эндпоинта с курсами для GET запроса
+      mock:
+        enabled: true
+      file: src/main/resources/json/exchange-rate.json
 
 logging:
   level:
     root: info
-
-

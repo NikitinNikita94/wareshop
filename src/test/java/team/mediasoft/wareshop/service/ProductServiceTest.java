@@ -44,7 +44,6 @@ class ProductServiceTest extends IntegrationTestBase {
         actual.ifPresent(product -> assertEquals(result.get(0).getCategory(), product.getCategory()));
     }
 
-
     @Test
     void findByIdTest() {
         Optional<ProductReadDto> maybeProduct = productService.findById(PRODUCT_UUID_1);

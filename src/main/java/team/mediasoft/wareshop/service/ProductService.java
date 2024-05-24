@@ -1,6 +1,5 @@
 package team.mediasoft.wareshop.service;
 
-import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,10 +9,14 @@ import team.mediasoft.wareshop.entity.dto.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.ProductReadDto;
 import team.mediasoft.wareshop.entity.dto.ProductUpdateDto;
 import team.mediasoft.wareshop.exception.ProductNotFoundException;
+import team.mediasoft.wareshop.exchanger.model.Currency;
+import team.mediasoft.wareshop.exchanger.model.CurrencyProvider;
+import team.mediasoft.wareshop.exchanger.service.ExchangeRateProvider;
 import team.mediasoft.wareshop.mapper.ProductMapper;
 import team.mediasoft.wareshop.search.criteria.SearchCriteria;
 import team.mediasoft.wareshop.search.specification.ProductSpecification;
 
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,6 +28,8 @@ import java.util.UUID;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ExchangeRateProvider rateProvider;
+    private final CurrencyProvider currencyProvider;
 
     /**
      * Метод возвращает коллекцию продуктов(товаров)
@@ -34,6 +39,7 @@ public class ProductService {
     public List<ProductReadDto> findAll(Pageable pageable) {
         return productRepository.findAll(pageable).stream()
                 .map(ProductMapper.INSTANCE::productToProductReadDto)
+                .map(this::setPriceAndCurrencyToDto)
                 .toList();
     }
 
@@ -43,10 +49,11 @@ public class ProductService {
      * @param id - идентификатор товара
      * @return Optional<ProductReadDto>
      */
-    public Optional<ProductReadDto> findById(UUID id) {
-        return Optional.ofNullable(productRepository.findById(id)
+    public ProductReadDto findById(UUID id) {
+        return productRepository.findById(id)
                 .map(ProductMapper.INSTANCE::productToProductReadDto)
-                .orElseThrow(() -> new ProductNotFoundException("Can't find a product with this id = " + id)));
+                .map(this::setPriceAndCurrencyToDto)
+                .orElseThrow(() -> new ProductNotFoundException("Can't find a product with this id = " + id));
     }
 
     /**
@@ -110,5 +117,19 @@ public class ProductService {
         return productRepository.findAll(specification.buildSpecification(), pageable).stream()
                 .map(ProductMapper.INSTANCE::productToProductReadDto)
                 .toList();
+    }
+
+    private ProductReadDto setPriceAndCurrencyToDto(ProductReadDto dto) {
+        if (currencyProvider.getCurrency() == null) {
+            currencyProvider.setCurrency(Currency.RUB);
+        }
+        if (!currencyProvider.getCurrency().equals(Currency.RUB)) {
+            dto.setPrice(
+                    dto.getPrice().divide(
+                            rateProvider.getExchangeRate(currencyProvider.getCurrency()),
+                            RoundingMode.HALF_EVEN));
+        }
+        dto.setCurrency(currencyProvider.getCurrency());
+        return dto;
     }
 }

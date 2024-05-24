@@ -29,7 +29,7 @@ import java.util.List;
 @Slf4j
 @Profile("!local")
 @RequiredArgsConstructor
-@ConditionalOnExpression("#{${app.scheduling.optimization:false} && ${app.scheduling.enabled:false}}")
+@ConditionalOnExpression("${app.scheduling.optimization:false == true} && ${app.scheduling.enabled:false == true}")
 public class OptimizedProductScheduler {
 
     private final JdbcTemplate jdbcTemplate;
