@@ -25,6 +25,12 @@ app:
       mock:
         enabled: true
       file: src/main/resources/json/exchange-rate.json
+  kafka:
+    enabled: true
+
+kafka:
+  bootstrapAddress: localhost:9091
+  groupId: group1
 
 logging:
   level:
