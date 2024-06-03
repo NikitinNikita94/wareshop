@@ -5,12 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import team.mediasoft.wareshop.util.MinioProperties;
 import team.mediasoft.wareshop.util.RestProperties;
 
 @SpringBootApplication
 @EnableCaching
 @EnableScheduling
-@EnableConfigurationProperties(RestProperties.class)
+@EnableConfigurationProperties({RestProperties.class, MinioProperties.class})
 public class WareshopApplication {
 
     public static void main(String[] args) {

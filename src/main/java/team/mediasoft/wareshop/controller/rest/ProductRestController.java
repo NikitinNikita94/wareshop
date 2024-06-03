@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,14 +23,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import team.mediasoft.wareshop.entity.dto.product.ProductCreateEditDto;
 import team.mediasoft.wareshop.entity.dto.product.ProductDtoInfo;
 import team.mediasoft.wareshop.entity.dto.product.ProductUpdateDto;
 import team.mediasoft.wareshop.mapper.ProductMapper;
 import team.mediasoft.wareshop.search.criteria.SearchCriteria;
+import team.mediasoft.wareshop.service.ProductMetaDataService;
 import team.mediasoft.wareshop.service.ProductService;
 
 import java.util.List;
@@ -42,6 +46,7 @@ import java.util.UUID;
 public class ProductRestController {
 
     private final ProductService productService;
+    private final ProductMetaDataService productMetaDataService;
 
     @GetMapping
     @Operation(
@@ -163,5 +168,41 @@ public class ProductRestController {
                 .toList();
 
         return ResponseEntity.ok().body(productDtoInfos);
+    }
+
+    @PostMapping(path = "/files/upload")
+    @Operation(
+            summary = "Сохранить файлы по идентификатору продукта",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Запрос выполнен",
+                            content = @Content(
+                                    mediaType = MediaType.MULTIPART_FORM_DATA_VALUE
+                            )
+                    )
+            }
+    )
+    public void uploadFile(@RequestParam("productId") UUID productId,
+                           @RequestParam("file") MultipartFile... file) {
+        productMetaDataService.uploadFile(productId, file);
+    }
+
+    @GetMapping(path = "/files/{productId}/download", produces = "application/zip")
+    @Operation(
+            summary = "Скачать файлы по идентификатору продукта",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Запрос выполнен",
+                            content = @Content(
+                                    mediaType = MediaType.MULTIPART_FORM_DATA_VALUE
+                            )
+                    )
+            }
+    )
+    public void downloadFile(@PathVariable("productId") UUID productId,
+                             HttpServletResponse response) {
+        productMetaDataService.downloadFiles(productId, response);
     }
 }
