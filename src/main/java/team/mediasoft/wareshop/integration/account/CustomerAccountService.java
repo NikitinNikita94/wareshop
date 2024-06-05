@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.businesslogic.service.account;
+package team.mediasoft.wareshop.integration.account;
 
 import java.util.List;
 import java.util.Map;

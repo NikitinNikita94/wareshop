@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.exchanger.filter;
+package team.mediasoft.wareshop.integration.currency.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,8 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import team.mediasoft.wareshop.exchanger.model.Currency;
-import team.mediasoft.wareshop.exchanger.model.CurrencyProvider;
+import team.mediasoft.wareshop.integration.currency.model.Currency;
+import team.mediasoft.wareshop.integration.currency.model.CurrencyProvider;
 
 import java.io.IOException;
 import java.util.Optional;

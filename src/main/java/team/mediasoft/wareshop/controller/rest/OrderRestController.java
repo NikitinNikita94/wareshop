@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import team.mediasoft.wareshop.businesslogic.service.ProductFullInfoService;
 import team.mediasoft.wareshop.entity.dto.order.CreateOrderDto;
 import team.mediasoft.wareshop.entity.dto.order.CreateOrderProductDtoInfo;
 import team.mediasoft.wareshop.entity.dto.order.OrderDtoIfo;
@@ -41,7 +40,6 @@ import java.util.UUID;
 public class OrderRestController {
 
     private final OrderService orderService;
-    private final ProductFullInfoService productFullInfoService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -141,6 +139,6 @@ public class OrderRestController {
 
     @GetMapping(value = "/info/product-all", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<UUID, List<OrderInfo>> getOrderInformation() {
-        return productFullInfoService.getOrderInfo();
+        return orderService.getOrderInfo();
     }
 }

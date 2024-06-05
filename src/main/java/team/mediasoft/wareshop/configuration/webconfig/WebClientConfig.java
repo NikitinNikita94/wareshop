@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.exchanger.webconfig;
+package team.mediasoft.wareshop.configuration.webconfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +22,10 @@ public class WebClientConfig {
         return WebClient.builder()
                 .baseUrl(properties.host())
                 .codecs(configurer -> {
-                    configurer.defaultCodecs().jackson2JsonEncoder(new Jackson2JsonEncoder(new ObjectMapper(), MediaType.APPLICATION_JSON));
-                    configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(new ObjectMapper(), MediaType.APPLICATION_JSON));
+                    configurer.defaultCodecs().jackson2JsonEncoder(
+                            new Jackson2JsonEncoder(new ObjectMapper(), MediaType.APPLICATION_JSON));
+                    configurer.defaultCodecs().jackson2JsonDecoder(
+                            new Jackson2JsonDecoder(new ObjectMapper(), MediaType.APPLICATION_JSON));
                 })
                 .defaultCookie("cookie-name", "cookie-value")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

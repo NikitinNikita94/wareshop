@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.exchanger.model;
+package team.mediasoft.wareshop.integration.currency.model;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;

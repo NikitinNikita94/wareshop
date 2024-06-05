@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.businesslogic.service.crm;
+package team.mediasoft.wareshop.integration.crm;
 
 import java.util.List;
 import java.util.Map;

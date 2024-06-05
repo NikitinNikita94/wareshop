@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.businesslogic.service.crm;
+package team.mediasoft.wareshop.integration.crm;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;

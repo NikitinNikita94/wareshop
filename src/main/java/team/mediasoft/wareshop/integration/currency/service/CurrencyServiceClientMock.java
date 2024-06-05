@@ -1,9 +1,9 @@
-package team.mediasoft.wareshop.exchanger.service;
+package team.mediasoft.wareshop.integration.currency.service;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-import team.mediasoft.wareshop.exchanger.model.ExchangeRate;
+import team.mediasoft.wareshop.integration.currency.model.ExchangeRate;
 
 import java.math.BigDecimal;
 

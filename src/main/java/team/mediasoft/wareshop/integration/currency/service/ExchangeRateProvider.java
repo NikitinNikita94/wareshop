@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.exchanger.service;
+package team.mediasoft.wareshop.integration.currency.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -6,8 +6,8 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
-import team.mediasoft.wareshop.exchanger.model.Currency;
-import team.mediasoft.wareshop.exchanger.model.ExchangeRate;
+import team.mediasoft.wareshop.integration.currency.model.Currency;
+import team.mediasoft.wareshop.integration.currency.model.ExchangeRate;
 import team.mediasoft.wareshop.util.RestProperties;
 
 import java.math.BigDecimal;

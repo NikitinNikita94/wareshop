@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.exchanger.service;
+package team.mediasoft.wareshop.integration.currency.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.util.retry.Retry;
-import team.mediasoft.wareshop.exchanger.model.ExchangeRate;
+import team.mediasoft.wareshop.integration.currency.model.ExchangeRate;
 import team.mediasoft.wareshop.util.RestProperties;
 
 import java.time.Duration;

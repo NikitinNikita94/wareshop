@@ -2,6 +2,7 @@ package team.mediasoft.wareshop.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.mediasoft.wareshop.data.repository.CustomerRepository;
@@ -11,9 +12,11 @@ import team.mediasoft.wareshop.entity.Customer;
 import team.mediasoft.wareshop.entity.Order;
 import team.mediasoft.wareshop.entity.OrderItem;
 import team.mediasoft.wareshop.entity.Product;
+import team.mediasoft.wareshop.entity.dto.customer.CustomerInfo;
 import team.mediasoft.wareshop.entity.dto.order.CreateOrderDto;
 import team.mediasoft.wareshop.entity.dto.order.CreateOrderProductDtoInfo;
 import team.mediasoft.wareshop.entity.dto.order.OrderDtoIfo;
+import team.mediasoft.wareshop.entity.dto.order.OrderInfo;
 import team.mediasoft.wareshop.entity.dto.order.OrderStatusDto;
 import team.mediasoft.wareshop.entity.dto.order.ReadOrderDto;
 import team.mediasoft.wareshop.entity.embeddable.OrderItemPk;
@@ -22,15 +25,22 @@ import team.mediasoft.wareshop.exception.CustomerNotFoundException;
 import team.mediasoft.wareshop.exception.OrderNotFoundException;
 import team.mediasoft.wareshop.exception.ProductAvailableException;
 import team.mediasoft.wareshop.exception.ProductNotFoundException;
+import team.mediasoft.wareshop.integration.account.CustomerAccountService;
+import team.mediasoft.wareshop.integration.crm.CustomerCrmService;
 import team.mediasoft.wareshop.mapper.OrderMapper;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static org.springframework.data.util.Pair.of;
 
 @Slf4j
 @Service
@@ -41,6 +51,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
+    private final CustomerAccountService accountService;
+    private final CustomerCrmService crmService;
     private final OrderMapper orderMapper;
 
     /**
@@ -169,6 +181,48 @@ public class OrderService {
                         }))
                 .get()
                 .orElseThrow(() -> new OrderNotFoundException("Заказа с таким идентификатором нет=" + orderId));
+    }
+
+    /**
+     * Метод возвращает информацию заказов по айди продукта
+     *
+     * @return - Map<UUID, List<OrderInfo>>
+     */
+    @Transactional
+    public Map<UUID, List<OrderInfo>> getOrderInfo() {
+        final List<Order> allOrderedByStatus = orderRepository.getAllOrderedByStatus();
+        final List<String> allStatusCustomerList = allOrderedByStatus.stream()
+                .map(order -> order.getCustomer().getLogin())
+                .toList();
+
+        CompletableFuture<Map<String, String>> accountMap = CompletableFuture.supplyAsync(
+                () -> accountService.getNonBlockAccountCustomersByLogins(allStatusCustomerList).join()
+        );
+        CompletableFuture<Map<String, String>> innMap = CompletableFuture.supplyAsync(
+                () -> crmService.getNonBlockCrmCustomersByLogins(allStatusCustomerList).join()
+        );
+
+        return allOrderedByStatus.stream()
+                .flatMap(order -> order.getOrderItems().stream()
+                        .map(oi -> of(oi.getPk().getProductId(),
+                                new OrderInfo(
+                                        order.getId(),
+                                        new CustomerInfo(order.getCustomer().getId(),
+                                                accountMap.join()
+                                                        .get(order.getCustomer().getLogin()),
+                                                order.getCustomer().getEmail(),
+                                                innMap.join()
+                                                        .get(order.getCustomer().getLogin())),
+                                        order.getStatus(),
+                                        order.getDeliveryAddress(),
+                                        oi.getQuantity()
+                                )))
+                ).collect(
+                        groupingBy(
+                                Pair::getFirst,
+                                mapping(Pair::getSecond, toList())
+                        ));
+
     }
 
     /**

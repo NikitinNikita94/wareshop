@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.exchanger.model;
+package team.mediasoft.wareshop.integration.currency.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

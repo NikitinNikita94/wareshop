@@ -1,11 +1,11 @@
-package team.mediasoft.wareshop.businesslogic.service.account;
+package team.mediasoft.wareshop.integration.account;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 import team.mediasoft.wareshop.util.RestProperties;
 
@@ -29,11 +29,11 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
                 .uri(properties.methods().get(1))
                 .bodyValue(logins)
                 .retrieve()
-                .bodyToFlux(new ParameterizedTypeReference<Map<String, String>>() {
+                .bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {
                 })
-                .onErrorResume(err -> Flux.empty())
+                .onErrorResume(err -> Mono.empty())
                 .retryWhen(Retry.backoff(2, Duration.ofSeconds(3)))
-                .blockFirst();
+                .block();
     }
 
     @Override
@@ -43,10 +43,10 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
                 .uri(properties.methods().get(1))
                 .bodyValue(logins)
                 .retrieve()
-                .bodyToFlux(new ParameterizedTypeReference<Map<String, String>>() {
+                .bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {
                 })
-                .onErrorResume(err -> Flux.empty())
+                .onErrorResume(err -> Mono.empty())
                 .retryWhen(Retry.backoff(2, Duration.ofSeconds(3)))
-                .singleOrEmpty().toFuture();
+                .toFuture();
     }
 }
