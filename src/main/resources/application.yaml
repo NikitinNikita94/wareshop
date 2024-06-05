@@ -26,11 +26,10 @@ app:
         enabled: true
       file: src/main/resources/json/exchange-rate.json
   kafka:
+    bootstrapAddress: localhost:9091
+    groupId: group1
     enabled: true
 
-kafka:
-  bootstrapAddress: localhost:9091
-  groupId: group1
 
 logging:
   level:

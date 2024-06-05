@@ -1,4 +1,4 @@
-package team.mediasoft.wareshop.config;
+package team.mediasoft.wareshop.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
