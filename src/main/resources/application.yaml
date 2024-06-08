@@ -34,6 +34,11 @@ app:
       username: ${MINIO_USERNAME:root}
       password: ${MINIO_PASSWORD:password}
       bucket-name: test
+  kafka:
+    bootstrapAddress: localhost:9091
+    groupId: group1
+    enabled: true
+
 
 logging:
   level:
