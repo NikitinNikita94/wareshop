@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1aed" author="Nikitin-Nikita">
+        <preConditions>
+            <not>
+                <tableExists tableName="product_document"/>
+            </not>
+        </preConditions>
+        <createTable tableName="product_document">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="product_id" type="UUID">
+                <constraints nullable="false" foreignKeyName="fk_product_document" references="product(id)"/>
+            </column>
+            <column name="file_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="product_document"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

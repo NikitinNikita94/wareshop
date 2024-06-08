@@ -82,7 +82,7 @@ class ProductServiceTest extends IntegrationTestBase {
     void updateTest() {
         ProductUpdateDto productUpdateDto = new ProductUpdateDto(
                 "Телефон LG",
-                123,
+                252,
                 "Мобильный телефон",
                 ProductCategory.MOBILE,
                 BigDecimal.valueOf(44_098.90),
