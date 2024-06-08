@@ -66,7 +66,8 @@ class ProductServiceTest extends IntegrationTestBase {
                 "Мобильный телефон",
                 ProductCategory.MOBILE,
                 BigDecimal.valueOf(34_098.90),
-                3
+                3,
+                true
         );
         ProductReadDto actualResult = productService.create(productDto);
         assertNotNull(actualResult);

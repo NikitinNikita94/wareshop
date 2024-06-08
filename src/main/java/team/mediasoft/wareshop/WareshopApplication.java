@@ -5,13 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import team.mediasoft.wareshop.util.KafkaProperties;
 import team.mediasoft.wareshop.util.RestProperties;
 
 @SpringBootApplication
 @EnableCaching
 @EnableScheduling
-@EnableConfigurationProperties({RestProperties.class, KafkaProperties.class})
+@EnableConfigurationProperties(RestProperties.class)
 public class WareshopApplication {
 
     public static void main(String[] args) {

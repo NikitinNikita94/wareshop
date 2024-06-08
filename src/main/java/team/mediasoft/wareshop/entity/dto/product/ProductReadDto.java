@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import team.mediasoft.wareshop.entity.enumeration.ProductCategory;
-import team.mediasoft.wareshop.exchanger.model.Currency;
+import team.mediasoft.wareshop.integration.currency.model.Currency;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

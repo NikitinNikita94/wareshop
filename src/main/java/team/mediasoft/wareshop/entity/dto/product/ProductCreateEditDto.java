@@ -1,6 +1,10 @@
 package team.mediasoft.wareshop.entity.dto.product;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.Value;
 import team.mediasoft.wareshop.entity.enumeration.ProductCategory;
 
@@ -32,4 +36,5 @@ public class ProductCreateEditDto {
     @Max(value = 10_000)
     Integer amount;
 
+    Boolean isAvailable;
 }

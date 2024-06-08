@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-service
+  namespace: myspace
+spec:
+  selector:
+    app: demok8s-app #должно соответствовать лейблу пода
+  ports:
+    - protocol: TCP
+      name: web
+      port: 8088 #порт сервиса
+      targetPort: 8080 #порт пода (порт, который открыт для контейнера)
+      # nodePort: 30181
+  type: NodePort

@@ -29,4 +29,12 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
                 where o.id = :orderId
            """)
     Optional<Order> findByIdFetchOrderedProducts(UUID orderId);
+
+    @Query("""
+                 select o from Order o
+                 left join fetch o.orderItems ps
+                 left join fetch ps.product p
+                 where o.status = 'CREATED' or o.status =  'CONFIRMED'
+            """)
+    List<Order> getAllOrderedByStatus();
 }

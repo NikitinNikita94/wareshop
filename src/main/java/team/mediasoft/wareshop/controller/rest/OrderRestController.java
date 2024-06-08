@@ -24,11 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 import team.mediasoft.wareshop.entity.dto.order.CreateOrderDto;
 import team.mediasoft.wareshop.entity.dto.order.CreateOrderProductDtoInfo;
 import team.mediasoft.wareshop.entity.dto.order.OrderDtoIfo;
+import team.mediasoft.wareshop.entity.dto.order.OrderInfo;
 import team.mediasoft.wareshop.entity.dto.order.OrderStatusDto;
 import team.mediasoft.wareshop.entity.dto.order.ReadOrderDto;
 import team.mediasoft.wareshop.service.OrderService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -133,5 +135,10 @@ public class OrderRestController {
     public ReadOrderDto updateOrderStatus(@RequestBody OrderStatusDto status,
                                           @PathVariable @Parameter(description = "Идентификатор заказа") UUID orderId) {
         return orderService.updateStatus(status, orderId);
+    }
+
+    @GetMapping(value = "/info/product-all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<UUID, List<OrderInfo>> getOrderInformation() {
+        return orderService.getOrderInfo();
     }
 }

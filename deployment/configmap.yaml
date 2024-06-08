@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demok8s-configmap
+  namespace: myspace
+data:
+  FOO_TEST: "hello from configmap NEW"

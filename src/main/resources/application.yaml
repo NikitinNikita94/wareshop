@@ -4,11 +4,11 @@ server:
   port: ${SERVER_PORT:8080}
 
 spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
   cache:
     caffeine:
       spec: 60s
-  profiles:
-    active: dev
 
 app:
   pathToFile: src/main/resources/static/out/products.txt
@@ -22,14 +22,11 @@ app:
       host: http://localhost:8082 # host второго сервиса
       methods:
         - /api/v2/currencies # url эндпоинта с курсами для GET запроса
+        - /api/v2/account-number # url эндпоинта для POST запроса для получения account-number
+        - /api/v2/account-inn  # url эндпоинта для POST запроса для получения account-inn
       mock:
-        enabled: true
+        enabled: false
       file: src/main/resources/json/exchange-rate.json
-  kafka:
-    bootstrapAddress: localhost:9091
-    groupId: group1
-    enabled: true
-
 
 logging:
   level:
